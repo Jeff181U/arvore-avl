@@ -1,1 +1,3 @@
-# Só o OCO!
+# Só o OCO
+#mEUZovo amem
+#primtormeiak
