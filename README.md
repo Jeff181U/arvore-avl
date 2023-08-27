@@ -1,5 +1,2 @@
-# Só o OCO!
-sapocururu
-# Só o OCO
-#mEUZovo amem
-#primtormeiak
+Trabalho sugerido pelo professor Luiz Nagata da disciplina de Estrutura de dados em C.
+
