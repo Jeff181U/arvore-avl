@@ -340,3 +340,20 @@
 -
 -    return strlen(buff);
 -}
+
+* Remoção do Controle de LED do sysfs Antigo:
+   * A variável led_attribute foi removida do array attrs[].
+   * A função attr_store foi completamente eliminada, pois sua única finalidade era escrever no LED, o que agora é feito por um mecanismo diferente.
+   * A lógica para tratar o "led" dentro da função attr_show foi removida.
+   * Os atributos dos sensores (ldr, temp, hum) foram marcados como somente leitura (S_IRUGO), já que a função de escrita (attr_store) foi removida.
+ * Criação de uma Função de Callback para o LED:
+   * Criei a nova função smartlamp_set_led_brightness(). O propósito dela é ser chamada pelo kernel sempre que o estado do LED precisar mudar. Ela contém a lógica para enviar o comando SET_LED correto via USB para a sua ESP32.
+ * Declaração de uma Estrutura led_classdev:
+   * Adicionei uma variável global static struct led_classdev smartlamp_led_cdev; para representar nosso dispositivo de LED de forma padronizada.
+ * Integração na Função usb_probe:
+   * Dentro da usb_probe, após a configuração bem-sucedida do dispositivo USB, a estrutura smartlamp_led_cdev é configurada:
+     * smartlamp_led_cdev.name é definido como "smartlamp::led".
+     * smartlamp_led_cdev.brightness_set é apontado para a nossa função de callback, smartlamp_set_led_brightness.
+   * A função devm_led_classdev_register() é chamada para registrar o LED no kernel, fazendo-o aparecer em /sys/class/leds/.
+ * Simplificação da usb_disconnect:
+   * Como usamos devm_led_classdev_register, não foi necessário adicionar um código de "desregistro" do LED na função usb_disconnect. O kernel gerencia isso automaticamente, tornando o código de limpeza mais simples e seguro.
