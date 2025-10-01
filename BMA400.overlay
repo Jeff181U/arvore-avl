@@ -1,0 +1,10 @@
+/* app.overlay */
+
+&i2c0 { // Se seu barramento for outro, como i2c1, mude aqui.
+    status = "okay";
+    bma400@14 { // O '14' é o endereço I2C do BMA400. Verifique o datasheet.
+        compatible = "bosch,bma400";
+        reg = <0x14>; // Endereço I2C em hexadecimal (0x14 ou 0x15)
+        label = "BMA400";
+    };
+};
